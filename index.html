@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gwta Umakanth | VLSI & Hardware Design Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #030a0e;
+    --surface: #071218;
+    --surface2: #0d1e26;
+    --accent: #00e5ff;
+    --accent2: #7c4dff;
+    --accent3: #00bfa5;
+    --gold: #ffd600;
+    --text: #e0f7fa;
+    --muted: #607d8b;
+    --border: rgba(0,229,255,0.12);
+    --glow: 0 0 32px rgba(0,229,255,0.18);
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+ 
+  /* BG Grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+ 
+  /* Radial glow blobs */
+  .blob1, .blob2 {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob1 { width: 600px; height: 600px; background: #00e5ff; top: -100px; right: -100px; animation: blobmove1 14s ease-in-out infinite alternate; }
+  .blob2 { width: 500px; height: 500px; background: #7c4dff; bottom: -100px; left: -100px; animation: blobmove2 16s ease-in-out infinite alternate; }
+ 
+  @keyframes blobmove1 { 0%{transform:translate(0,0);} 100%{transform:translate(-80px,80px);} }
+  @keyframes blobmove2 { 0%{transform:translate(0,0);} 100%{transform:translate(80px,-60px);} }
+ 
+  /* ========== NAV ========== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    background: rgba(3,10,14,0.85);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+ 
+  /* ========== HERO ========== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 60px 80px;
+    z-index: 1;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    width: fit-content;
+    animation: fadeup 0.8s ease both;
+  }
+  .hero-tag::before { content: '▶'; font-size: 0.6rem; }
+ 
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    animation: fadeup 0.8s 0.1s ease both;
+  }
+  .hero h1 .name-accent { color: var(--accent); }
+  .hero h1 .block { display: block; }
+ 
+  .hero-sub {
+    margin-top: 24px;
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.8;
+    animation: fadeup 0.8s 0.2s ease both;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+ 
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    margin-top: 44px;
+    flex-wrap: wrap;
+    animation: fadeup 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 32px rgba(0,229,255,0.5); transform: translateY(-2px); }
+ 
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+ 
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 72px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    animation: fadeup 0.8s 0.4s ease both;
+    flex-wrap: wrap;
+  }
+  .stat-item { }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+ 
+  /* ========== SECTIONS ========== */
+  section { position: relative; z-index: 1; padding: 100px 60px; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 56px;
+  }
+ 
+  /* ========== ABOUT ========== */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  .about-text { font-size: 1.05rem; color: #b0bec5; line-height: 1.9; }
+  .about-text p + p { margin-top: 20px; }
+  .highlight { color: var(--accent); font-weight: 500; }
+  .about-cards { display: flex; flex-direction: column; gap: 16px; }
+  .about-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .about-card:hover { border-color: rgba(0,229,255,0.4); box-shadow: var(--glow); }
+  .card-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+  .card-desc { font-size: 0.85rem; color: var(--muted); }
+ 
+  /* ========== SKILLS ========== */
+  .skills-section { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .skill-group {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+  .skill-group:hover { border-color: rgba(0,229,255,0.35); }
+  .skill-group-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 6px 14px;
+    border-radius: 2px;
+    border: 1px solid;
+    letter-spacing: 0.06em;
+  }
+  .tag-vlsi { border-color: rgba(0,229,255,0.4); color: var(--accent); background: rgba(0,229,255,0.06); }
+  .tag-tool { border-color: rgba(124,77,255,0.4); color: #b39ddb; background: rgba(124,77,255,0.06); }
+  .tag-prog { border-color: rgba(0,191,165,0.4); color: #80cbc4; background: rgba(0,191,165,0.06); }
+  .tag-soft { border-color: rgba(255,214,0,0.3); color: #ffe57f; background: rgba(255,214,0,0.05); }
+ 
+  /* ========== EXPERIENCE ========== */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 56px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 8px;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 16px rgba(0,229,255,0.6);
+  }
+  .timeline-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .timeline-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .timeline-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .badge-current { background: rgba(0,229,255,0.15); color: var(--accent); border: 1px solid rgba(0,229,255,0.3); }
+  .badge-done { background: rgba(124,77,255,0.15); color: #b39ddb; border: 1px solid rgba(124,77,255,0.3); }
+  .timeline-role {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 4px;
+  }
+  .timeline-org { font-size: 0.9rem; color: var(--accent); margin-bottom: 12px; }
+  .timeline-desc { font-size: 0.95rem; color: #b0bec5; line-height: 1.8; }
+  .timeline-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+ 
+  /* ========== PROJECTS ========== */
+  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .project-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-card:hover { border-color: rgba(0,229,255,0.35); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .project-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .project-desc { font-size: 0.9rem; color: #90a4ae; line-height: 1.75; }
+  .project-footer { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+ 
+  /* ========== ACHIEVEMENTS ========== */
+  .achievements-section { background: var(--surface); }
+  .achievements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .achievement-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px 28px;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .achievement-card:hover { border-color: rgba(255,214,0,0.4); box-shadow: 0 0 32px rgba(255,214,0,0.1); }
+  .achievement-card.featured { border-color: rgba(255,214,0,0.4); background: rgba(255,214,0,0.04); }
+  .ach-icon { font-size: 2.2rem; margin-bottom: 16px; }
+  .ach-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+  .ach-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+ 
+  /* ========== EDUCATION ========== */
+  .edu-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    max-width: 860px;
+  }
+  .edu-degree { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem; margin-bottom: 4px; }
+  .edu-stream { color: var(--accent); font-size: 1rem; margin-bottom: 8px; }
+  .edu-college { font-size: 0.9rem; color: var(--muted); margin-bottom: 20px; }
+  .edu-courses { display: flex; flex-wrap: wrap; gap: 8px; }
+  .edu-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 8px 16px;
+    border-radius: 2px;
+    white-space: nowrap;
+    align-self: start;
+  }
+ 
+  /* ========== CONTACT ========== */
+  .contact-section {
+    background: linear-gradient(135deg, var(--surface) 0%, rgba(7,18,24,0.9) 100%);
+    border-top: 1px solid var(--border);
+  }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .contact-headline {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .contact-headline .accent { color: var(--accent); }
+  .contact-sub { font-size: 1rem; color: var(--muted); max-width: 400px; line-height: 1.8; }
+  .contact-links { display: flex; flex-direction: column; gap: 20px; }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .contact-link:hover { border-color: var(--accent); box-shadow: var(--glow); }
+  .contact-link-icon { font-size: 1.4rem; }
+  .contact-link-label { font-size: 0.75rem; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+  .contact-link-val { font-size: 0.95rem; font-weight: 500; margin-top: 2px; }
+ 
+  /* ========== FOOTER ========== */
+  footer {
+    z-index: 1;
+    position: relative;
+    text-align: center;
+    padding: 32px 60px;
+    border-top: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+ 
+  /* ========== ANIMATIONS ========== */
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { gap: 20px; }
+    section { padding: 72px 24px; }
+    .hero { padding: 100px 24px 64px; }
+    .about-grid, .skills-grid, .projects-grid, .achievements-grid, .contact-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .edu-card { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="blob1"></div>
+<div class="blob2"></div>
+ 
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">GU.dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+ 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">VLSI & Hardware Design Engineer</div>
+  <h1>
+    <span class="block">Gwta</span>
+    <span class="block name-accent">Umakanth</span>
+  </h1>
+  <p class="hero-sub">
+    ECE student specializing in <strong>VLSI Design, SoC/ASIC Architecture,</strong> and <strong>FPGA Development</strong>. Building next-generation silicon solutions with hands-on expertise in Cadence, Vivado, and RTL design flows.
+  </p>
+  <div class="hero-cta">
+    <a href="https://www.linkedin.com/in/umakanth-gwta-2190542b4" target="_blank" class="btn-primary">LinkedIn Profile</a>
+    <a href="https://github.com/Umakanth05" target="_blank" class="btn-ghost">GitHub →</a>
+    <a href="mailto:umakanthgwta@gmail.com" class="btn-ghost">Hire Me →</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Hardware Projects</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Internships</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">EDA Tools</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1</div>
+      <div class="stat-label">National Competition</div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">// 01 — About Me</div>
+  <div class="section-title">Passionate about<br/>Silicon & Systems</div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>
+        I'm an Electronics and Communication Engineering student at <span class="highlight">Methodist College of Engineering and Technology</span>, with a deep focus on <span class="highlight">VLSI Design</span> and hardware systems. My journey spans RTL design, FPGA implementation, and the full SoC/ASIC design flow.
+      </p>
+      <p>
+        Currently interning at <span class="highlight">Osmania University</span> in SoC/ASIC Design, I'm gaining real-world exposure to industry-standard EDA tools including Cadence Virtuoso, Genus, and Innovus — skills that are central to the semiconductor industry.
+      </p>
+      <p>
+        Beyond hardware, I explore <span class="highlight">enterprise software platforms like Salesforce</span> and full-stack capabilities, ensuring I bring cross-functional value to any engineering or tech team. I'm actively targeting roles in VLSI/ASIC Design and high-growth software platforms.
+      </p>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="card-icon">🔬</div>
+        <div>
+          <div class="card-title">Primary Focus — VLSI Design</div>
+          <div class="card-desc">RTL to GDSII flow, SoC/ASIC design, physical design, synthesis & verification</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">⚡</div>
+        <div>
+          <div class="card-title">FPGA & Embedded Systems</div>
+          <div class="card-desc">Verilog-based digital design, Xilinx Vivado, microcontroller integration</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">☁️</div>
+        <div>
+          <div class="card-title">Secondary Focus — Salesforce</div>
+          <div class="card-desc">Enterprise CRM platform with high-package placement opportunities</div>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🌐</div>
+        <div>
+          <div class="card-title">Innovation & Research</div>
+          <div class="card-desc">National-level competition participant; India Innovation Challenge 2026, Delhi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-label">// 02 — Technical Skills</div>
+  <div class="section-title">Tools & Technologies</div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-title">⚙ VLSI / Hardware Design</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-vlsi">VLSI Design</span>
+        <span class="skill-tag tag-vlsi">RTL Design</span>
+        <span class="skill-tag tag-vlsi">SoC Design</span>
+        <span class="skill-tag tag-vlsi">ASIC Design</span>
+        <span class="skill-tag tag-vlsi">FPGA Development</span>
+        <span class="skill-tag tag-vlsi">Digital Electronics</span>
+        <span class="skill-tag tag-vlsi">Circuit Design</span>
+        <span class="skill-tag tag-vlsi">Embedded Systems</span>
+        <span class="skill-tag tag-vlsi">Synthesis</span>
+        <span class="skill-tag tag-vlsi">Physical Design</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">🛠 EDA Tools</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-tool">Cadence Virtuoso</span>
+        <span class="skill-tag tag-tool">Cadence Genus</span>
+        <span class="skill-tag tag-tool">Innovus</span>
+        <span class="skill-tag tag-tool">Xilinx Vivado</span>
+        <span class="skill-tag tag-tool">MATLAB</span>
+        <span class="skill-tag tag-tool">Arduino IDE</span>
+        <span class="skill-tag tag-tool">LTspice</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">💻 Programming</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-prog">Verilog / SystemVerilog</span>
+        <span class="skill-tag tag-prog">C / C++</span>
+        <span class="skill-tag tag-prog">Python</span>
+        <span class="skill-tag tag-prog">MATLAB Scripting</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">☁ Enterprise / Software</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-soft">Salesforce CRM</span>
+        <span class="skill-tag tag-soft">IoT Systems</span>
+        <span class="skill-tag tag-soft">Technical Documentation</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">🤝 Professional Skills</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-soft">Problem Solving</span>
+        <span class="skill-tag tag-soft">Team Collaboration</span>
+        <span class="skill-tag tag-soft">Research & Analysis</span>
+        <span class="skill-tag tag-soft">Project Management</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-title">📚 Coursework</div>
+      <div class="skill-tags">
+        <span class="skill-tag tag-vlsi">Digital Electronics</span>
+        <span class="skill-tag tag-vlsi">Microprocessors</span>
+        <span class="skill-tag tag-vlsi">Signals & Systems</span>
+        <span class="skill-tag tag-vlsi">VLSI Design</span>
+        <span class="skill-tag tag-vlsi">Communication Systems</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// 03 — Experience</div>
+  <div class="section-title">Internships &<br/>Industry Exposure</div>
+  <div class="timeline">
+ 
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-date">Summer 2026</span>
+        <span class="timeline-badge badge-current">● Current</span>
+      </div>
+      <div class="timeline-role">SoC / ASIC Design Intern</div>
+      <div class="timeline-org">Osmania University — Hyderabad, India</div>
+      <div class="timeline-desc">
+        Working on real-world SoC and ASIC design projects under experienced faculty mentors. Gaining hands-on experience with the complete RTL-to-GDSII design flow, including synthesis using Cadence Genus, place-and-route with Innovus, and functional verification. Developing proficiency in industry-standard EDA tools used in leading semiconductor companies.
+      </div>
+      <div class="timeline-tags">
+        <span class="skill-tag tag-vlsi">SoC Design</span>
+        <span class="skill-tag tag-vlsi">ASIC Flow</span>
+        <span class="skill-tag tag-tool">Cadence Genus</span>
+        <span class="skill-tag tag-tool">Innovus</span>
+        <span class="skill-tag tag-vlsi">RTL to GDSII</span>
+      </div>
+    </div>
+ 
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-date">2025</span>
+        <span class="timeline-badge badge-done">Completed</span>
+      </div>
+      <div class="timeline-role">Embedded Systems & Hardware Design Intern</div>
+      <div class="timeline-org">Industry Training Program</div>
+      <div class="timeline-desc">
+        Hands-on implementation of embedded systems projects integrating microcontrollers, sensors, and communication protocols. Worked on practical circuit design, PCB-level prototyping, and real-time data acquisition systems.
+      </div>
+      <div class="timeline-tags">
+        <span class="skill-tag tag-vlsi">Embedded Systems</span>
+        <span class="skill-tag tag-vlsi">Circuit Design</span>
+        <span class="skill-tag tag-tool">Arduino</span>
+        <span class="skill-tag tag-prog">C/C++</span>
+      </div>
+    </div>
+ 
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-date">Ongoing</span>
+      </div>
+      <div class="timeline-role">FPGA Design Projects</div>
+      <div class="timeline-org">Methodist College of Engineering and Technology</div>
+      <div class="timeline-desc">
+        Self-driven FPGA digital design work — implementing digital circuits in Verilog on Xilinx FPGA platforms. Projects include combinational and sequential logic blocks, FSM design, and hardware accelerators.
+      </div>
+      <div class="timeline-tags">
+        <span class="skill-tag tag-vlsi">FPGA</span>
+        <span class="skill-tag tag-tool">Xilinx Vivado</span>
+        <span class="skill-tag tag-prog">Verilog</span>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- PROJECTS -->
+<section id="projects" style="background: var(--surface); border-top: 1px solid var(--border);">
+  <div class="section-label">// 04 — Projects</div>
+  <div class="section-title">Engineering &<br/>Design Work</div>
+  <div class="projects-grid">
+ 
+    <div class="project-card">
+      <div class="project-num">PROJECT / 01</div>
+      <div class="project-title">FPGA-Based Digital Design System</div>
+      <div class="project-desc">
+        Designed and implemented digital circuits using Verilog HDL and deployed them on Xilinx FPGA platforms using Vivado. Includes FSM design, datapath units, and sequential logic — foundational to ASIC/VLSI design methodology.
+      </div>
+      <div class="project-footer">
+        <span class="skill-tag tag-vlsi">FPGA</span>
+        <span class="skill-tag tag-prog">Verilog</span>
+        <span class="skill-tag tag-tool">Vivado</span>
+      </div>
+    </div>
+ 
+    <div class="project-card">
+      <div class="project-num">PROJECT / 02</div>
+      <div class="project-title">IoT Smart Monitoring System</div>
+      <div class="project-desc">
+        Developed an IoT-based environmental monitoring system integrating multiple sensors, a microcontroller, and wireless communication modules. Real-time data collection and threshold-based alert mechanisms implemented in C.
+      </div>
+      <div class="project-footer">
+        <span class="skill-tag tag-vlsi">Embedded Systems</span>
+        <span class="skill-tag tag-prog">C/C++</span>
+        <span class="skill-tag tag-tool">Arduino</span>
+        <span class="skill-tag tag-soft">IoT</span>
+      </div>
+    </div>
+ 
+    <div class="project-card">
+      <div class="project-num">PROJECT / 03</div>
+      <div class="project-title">Microcontroller-Based Control System</div>
+      <div class="project-desc">
+        Built a microcontroller-based embedded system integrating sensors, actuators, and UART/I2C communication. Focus on hardware-software co-design, real-time response, and low-level programming.
+      </div>
+      <div class="project-footer">
+        <span class="skill-tag tag-vlsi">Microprocessors</span>
+        <span class="skill-tag tag-prog">C</span>
+        <span class="skill-tag tag-vlsi">Embedded</span>
+      </div>
+    </div>
+ 
+    <div class="project-card">
+      <div class="project-num">PROJECT / 04</div>
+      <div class="project-title">MATLAB Signal Processing</div>
+      <div class="project-desc">
+        Implemented digital signal processing algorithms in MATLAB, including filter design and spectral analysis. Reinforces core concepts from Signals & Systems coursework with practical computational implementation.
+      </div>
+      <div class="project-footer">
+        <span class="skill-tag tag-tool">MATLAB</span>
+        <span class="skill-tag tag-vlsi">DSP</span>
+        <span class="skill-tag tag-prog">MATLAB Script</span>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- ACHIEVEMENTS -->
+<section id="achievements" class="achievements-section">
+  <div class="section-label">// 05 — Achievements</div>
+  <div class="section-title">Milestones &<br/>Recognition</div>
+  <div class="achievements-grid">
+ 
+    <div class="achievement-card featured">
+      <div class="ach-icon">🏆</div>
+      <div class="ach-title">India Innovation Challenge 2026</div>
+      <div class="ach-desc">Participated in the prestigious national-level India Innovation Challenge 2026, held in New Delhi. Competed alongside top engineering talent from across the country.</div>
+    </div>
+ 
+    <div class="achievement-card">
+      <div class="ach-icon">🔬</div>
+      <div class="ach-title">SoC/ASIC Internship — Osmania University</div>
+      <div class="ach-desc">Selected for a competitive summer internship in the SoC/ASIC Design domain at Osmania University, working with industry-grade Cadence EDA tools.</div>
+    </div>
+ 
+    <div class="achievement-card">
+      <div class="ach-icon">⚡</div>
+      <div class="ach-title">FPGA Hardware Projects</div>
+      <div class="ach-desc">Successfully designed and verified digital hardware systems on FPGA platforms, demonstrating end-to-end hardware design proficiency using Verilog and Vivado.</div>
+    </div>
+ 
+    <div class="achievement-card">
+      <div class="ach-icon">📡</div>
+      <div class="ach-title">IoT System Deployment</div>
+      <div class="ach-desc">Deployed a functional IoT monitoring system integrating sensors, microcontrollers, and wireless protocols — showcasing cross-layer hardware-software integration.</div>
+    </div>
+ 
+    <div class="achievement-card">
+      <div class="ach-icon">🛠</div>
+      <div class="ach-title">EDA Tool Proficiency</div>
+      <div class="ach-desc">Hands-on expertise with Cadence Virtuoso, Genus, Innovus, and Xilinx Vivado — tools used by leading semiconductor companies like Intel, Qualcomm, and Texas Instruments.</div>
+    </div>
+ 
+    <div class="achievement-card">
+      <div class="ach-icon">📚</div>
+      <div class="ach-title">Continuous Learner</div>
+      <div class="ach-desc">Active participant in technical workshops, seminars, and engineering training programs — consistently expanding domain knowledge in VLSI, embedded systems, and hardware design.</div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">// 06 — Education</div>
+  <div class="section-title">Academic Background</div>
+  <div class="edu-card">
+    <div>
+      <div class="edu-degree">Bachelor of Engineering</div>
+      <div class="edu-stream">Electronics and Communication Engineering (ECE)</div>
+      <div class="edu-college">Methodist College of Engineering and Technology, Hyderabad</div>
+      <div class="edu-courses">
+        <span class="skill-tag tag-vlsi">VLSI Design</span>
+        <span class="skill-tag tag-vlsi">Digital Electronics</span>
+        <span class="skill-tag tag-vlsi">Microprocessors & Microcontrollers</span>
+        <span class="skill-tag tag-vlsi">Signals and Systems</span>
+        <span class="skill-tag tag-vlsi">Embedded Systems</span>
+        <span class="skill-tag tag-vlsi">Communication Systems</span>
+        <span class="skill-tag tag-vlsi">Electronic Devices & Circuits</span>
+      </div>
+    </div>
+    <div class="edu-year">2022 – 2026</div>
+  </div>
+</section>
+ 
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="section-label">// 07 — Contact</div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-headline">Let's build<br/>something <span class="accent">great</span><br/>together.</div>
+      <p class="contact-sub" style="margin-top:20px;">
+        Open to VLSI / ASIC Design roles, Salesforce opportunities, research collaborations, and internships. Reach out — I respond quickly.
+      </p>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:umakanthgwta@gmail.com" class="contact-link">
+        <div class="contact-link-icon">📧</div>
+        <div>
+          <div class="contact-link-label">Email</div>
+          <div class="contact-link-val">umakanthgwta@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/umakanth-gwta-2190542b4" target="_blank" class="contact-link">
+        <div class="contact-link-icon">💼</div>
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-val">Umakanth Gwta</div>
+        </div>
+      </a>
+      <a href="https://github.com/Umakanth05" target="_blank" class="contact-link">
+        <div class="contact-link-icon">🐙</div>
+        <div>
+          <div class="contact-link-label">GitHub</div>
+          <div class="contact-link-val">Umakanth05</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <span style="color:var(--accent)">Gwta Umakanth</span> &nbsp;·&nbsp; ECE Engineer · VLSI & SoC/ASIC Design · Hyderabad, India
+</footer>
+ 
+</body>
+</html>
